@@ -9,7 +9,7 @@ userRouter.post('', async (req, res, next) => {
     const { name, email, password, repeat_password } = req.body
 
     const newUser = new User({ name, email, password, repeat_password })
-    const sessionUser = sessionizeUser(newManager)
+    const sessionUser = sessionizeUser(newUser)
     await newUser.save()
 
     req.session.user = sessionUser

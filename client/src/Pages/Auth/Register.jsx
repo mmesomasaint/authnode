@@ -1,39 +1,51 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Label from '../../Components/Label'
 import Input from '../../Components/Input'
 import Button from '../../Components/Button'
 import ValidationError from '../../Components/ValidationError'
+import useForm from '../../Hooks/useForm'
 
 export default function Register() {
-  const [name, setName] = useState('') 
-  const [email, setEmail] = useState('') 
-  const [password, setPassword] = useState('')
-  const [repeat_password, setRepeatPassword] = useState('')
-  const [error, setError] = useState({
-    name: '', email: '', password: '', repeat_password: ''
+  const navigate = useNavigate() 
+  const { data, setData, error, processing, post, reset } = useForm({
+    name: '',
+    email: '',
+    password: '',
+    repeat_password: '',
   })
 
   const onHandleChange = (e) => {
-    const t_name = e.target.name 
-    t_name === 'name' && setName(e.target.value) 
-    t_name === 'email' && setEmail(e.target.value) 
-    t_name === 'password' && setPassword(e.target.value) 
-    t_name === 'repeat_password' && setRepeatPassword(e.target.value) 
+    setData(e.target.name, e.target.value)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    const user = await post('user')
+    Object.keys(error).every(key => error[key] === '') && navigate('/dashboard')
   }
 
+  useEffect(() => {
+    return () => {
+      reset('password', 'repeat_password')
+    }
+  }, [error])
+
   return (
-    <div>
+    <div className="bg-gradient-to-tr from-orange-100 via-red-200 to-orange-100 min-h-screen m-0 pt-1 grid gap-0 place-items-center">
+      <div className="flex flex-col w-[95%] max-w-sm mx-2 p-6 bg-slate-200 rounded-xl">
       <form onSubmit={handleSubmit}>
         <div>
           <Label forInput='name' value='Name' />
           <Input
             name='name'
-            value={name}
+            value={data.name}
+            className={
+              `mt-1 block w-full p-2 ` +
+              (error.name &&
+                `focus:outline-none ring ring-red-700 focus:ring-red-700`)
+            }
             autoComplete='name'
             isFocused={true}
             handleChange={onHandleChange}
@@ -45,7 +57,12 @@ export default function Register() {
           <Input
             type='email'
             name='email'
-            value={email}
+            value={data.email}
+            className={
+              `mt-1 block w-full p-2 ` +
+              (error.email &&
+                `focus:outline-none ring ring-red-700 focus:ring-red-700`)
+            }
             autoComplete='email'
             handleChange={onHandleChange}
           />
@@ -56,7 +73,12 @@ export default function Register() {
           <Input
             type='password'
             name='password'
-            value={password}
+            value={data.password}
+            className={
+              `mt-1 block w-full p-2 ` +
+              (error.password &&
+                `focus:outline-none ring ring-red-700 focus:ring-red-700`)
+            }
             autoComplete='password'
             handleChange={onHandleChange}
           />
@@ -67,7 +89,12 @@ export default function Register() {
           <Input
             type='password'
             name='repeat_password'
-            value={repeat_password}
+            value={data.repeat_password}
+            className={
+              `mt-1 block w-full p-2 ` +
+              (error.repeat_password &&
+                `focus:outline-none ring ring-red-700 focus:ring-red-700`)
+            }
             autoComplete='repeat_password'
             handleChange={onHandleChange}
           />
@@ -79,9 +106,10 @@ export default function Register() {
           <Link to='/login' className='underline italic text-sm'>
             I have an account?
           </Link>
-          <Button>Register</Button>
+          <Button disabled={processing}>Register</Button>
         </div>
       </form>
+      </div>
     </div>
   )
 }
