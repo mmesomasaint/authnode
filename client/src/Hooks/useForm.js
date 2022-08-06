@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
+import CLIENT from '../client'
 
 export default function useForm(defaults) {
   const DOMAIN = 'http://localhost:5000/api/'
@@ -26,8 +26,8 @@ export default function useForm(defaults) {
       setError(defaults)
 
       try {
-        const response = await axios.post(DOMAIN + endpoint, data)
-        if (response.data.user) return response.data.user
+        const response = await CLIENT.post(DOMAIN + endpoint, data)
+        return response.data
       } catch (err) {
         // Fill with new errors.
         const newError = err.response.data
@@ -42,7 +42,7 @@ export default function useForm(defaults) {
       setError(defaults)
 
       try {
-        const response = await axios.put(DOMAIN + endpoint, data)
+        const response = await CLIENT.put(DOMAIN + endpoint, data)
         if (response.data) {
           setProcessing(false)
           return response.data

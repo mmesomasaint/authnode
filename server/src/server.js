@@ -13,7 +13,6 @@ import {
 } from '../config'
 import errorHandler from './validations/errorhandler'
 import { userRouter, sessionRouter } from './routes/index'
-
 ;(async () => {
   try {
     mongoose.connect(MONGO_URI, { useNewUrlParser: true })
@@ -22,7 +21,13 @@ import { userRouter, sessionRouter } from './routes/index'
     const app = express()
 
     app.disable('x-powered-by')
-    app.use(cors())
+    app.use(
+      cors({
+        origin:['http://localhost:3000'],
+        methods:['GET','POST', 'PUT', 'DELETE'],
+        credentials: true,
+      })
+    )
     app.use(express.urlencoded({ extended: true }))
     app.use(express.json())
     app.use(

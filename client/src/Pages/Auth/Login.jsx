@@ -20,8 +20,8 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const res = await post('session')
-    res && navigate('/dashboard')
+    const session = await post('session')
+    session && session.user && navigate('/dashboard')
   }
 
   useEffect(() => {

@@ -22,8 +22,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const user = await post('user')
-    Object.keys(error).every(key => error[key] === '') && navigate('/dashboard')
+    await post('user')
   }
 
   useEffect(() => {
