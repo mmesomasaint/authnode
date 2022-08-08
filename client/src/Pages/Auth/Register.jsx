@@ -6,7 +6,7 @@ import Button from '../../Components/Button'
 import ValidationError from '../../Components/ValidationError'
 import useForm from '../../Hooks/useForm'
 
-export default function Register() {
+export default function Register({ setLogin }) {
   const navigate = useNavigate()
   const { data, setData, error, processing, post, reset } = useForm({
     name: '',
@@ -23,7 +23,10 @@ export default function Register() {
     e.preventDefault()
 
     const session = await post('user')
-    if (session) navigate('/dashboard')
+    if (session) {
+      setLogin(true)
+      navigate('/dashboard')
+    }
   }
 
   useEffect(() => {
