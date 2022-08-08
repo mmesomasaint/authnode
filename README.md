@@ -12,6 +12,7 @@ Downloads all the dependencies for this app.
 
 ### `npm start`
 
+Run this in the project directory only!!
 Launches the server and the client at the same time.
 Opens your browser on http://localhost:3000/ which is react default port.
 
