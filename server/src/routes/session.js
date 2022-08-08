@@ -15,7 +15,7 @@ sessionRouter.post('', async (req, res, next) => {
         const sessionUser = sessionizeUser(user)
         req.session.user = sessionUser
   
-        res.send({ user: sessionUser })
+        res.send(sessionUser)
       } else {
         throw new Error('Invalid password', {cause: 'password'})
       }
@@ -37,7 +37,7 @@ sessionRouter.delete('', ({ session }, res, next) => {
         res.send(user)
       })
     } else {
-      throw new Error('Something went wrong')
+      throw new Error('Login to continue', {cause: 'notLoggedIn'})
     }
   } catch (err) {
     next(err)

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Button({ type = 'submit', className = '', processing, children }) {
+export default function Button({ type = 'submit', className = '', onClick, processing, children }) {
     return (
         <button
             type={type}
@@ -9,6 +9,7 @@ export default function Button({ type = 'submit', className = '', processing, ch
                     processing && 'opacity-25'
                 } ` + className
             }
+            onClick={onClick && (() => onClick())}
             disabled={processing}
         >
             {children}

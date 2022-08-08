@@ -2,7 +2,6 @@ import { useState } from 'react'
 import CLIENT from '../client'
 
 export default function useForm(defaults) {
-  const DOMAIN = 'http://localhost:5000/api/'
   const [error, setError] = useState(defaults)
   const [data, setData] = useState(defaults)
   const [processing, setProcessing] = useState(false)
@@ -26,10 +25,11 @@ export default function useForm(defaults) {
       setError(defaults)
 
       try {
-        const response = await CLIENT.post(DOMAIN + endpoint, data)
+        const response = await CLIENT.post(endpoint, data)
         return response.data
       } catch (err) {
         // Fill with new errors.
+        console.log(err)
         const newError = err.response.data
         setError({ ...defaults, ...newError })
       } finally {
@@ -42,7 +42,7 @@ export default function useForm(defaults) {
       setError(defaults)
 
       try {
-        const response = await CLIENT.put(DOMAIN + endpoint, data)
+        const response = await CLIENT.put(endpoint, data)
         if (response.data) {
           setProcessing(false)
           return response.data

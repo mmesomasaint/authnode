@@ -34,6 +34,7 @@ const errorHandler = (err, req, res, next) => {
     const otherErrors = [
       'email',
       'password',
+      'notLoggedIn'
     ]
 
     if (err.name === 'ValidationError') handleValidationError(err, res)
