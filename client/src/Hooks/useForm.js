@@ -51,6 +51,8 @@ export default function useForm(defaults) {
         // fill with new errors.
         const newError = err.response.data
         setError({ ...defaults, ...newError })
+      } finally {
+        setProcessing(false)
       }
     },
     reset(...fields) {
